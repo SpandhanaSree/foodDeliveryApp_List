@@ -1,0 +1,6 @@
+orderId,customerId,foodName,quantity,price,totalAmount
+101,C001,Chicken Biryani,2,250.0,500.0
+102,C002,Veg Fried Rice,1,180.0,180.0
+103,C003,Burger,2,600.0,1200.0
+104,C004,Momos,3,100.0,300.0
+105,C004,Manchurian,2,70.0,140.0
