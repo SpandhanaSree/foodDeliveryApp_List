@@ -21,6 +21,8 @@ public class FoodDeliveryController {
         return instance;
     }
 
+    /*Controller ki Service object kavali !! Singleton kabati only one instance of Service class create chesi, 
+    dani use cheyyali. So we use getInstance() method to get the instance of Service class.*/
     private FoodDeliveryService service = FoodDeliveryService.getInstance();
 
     public boolean addCustomer(Customer customer) {

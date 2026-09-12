@@ -91,11 +91,22 @@ public class FoodDeliveryRepository {
         return customerOrders;
     }
 
-    /*Mana project lo customers memory lo ArrayList lo unnaru: */
-    public void saveCustomers() {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(customerFile))) {
+    /*Mana project lo customers memory lo ArrayList lo unnaru: 
+    *Ippudu program close ayithe, ee ArrayList data memory nunchi pothundi.
+    *So manam aa data ni permanent ga: customers.csv file lo save chestham*/
+    public void saveCustomers() {  //Customers ni file lo save cheyyadaniki ee method. Void because emi return cheyyadu. Just save chestundi.
+
+        //new FileWriter(customerFile) - customers.csv file ni writing kosam open cheyyi.
+        //new PrintWriter(new FileWriter(customerFile)) - File open chesam → ippudu danilo lines easy ga write cheyyadaniki PrintWriter use chestham.
+        try (PrintWriter pw = new PrintWriter(new FileWriter(customerFile))) { 
+
+            //Header save chestunnam
             pw.println("customerId,customerName,phoneNumber,address");
+
+            //customers ArrayList lo unna each customer ni one-by-one tesukoni, dani details ni file lo write chestham.
             for (Customer customer : customers) {
+
+                //customer object ni directly print chestunnam.
                 pw.println(customer);
             }
         } catch (IOException e) {
