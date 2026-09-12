@@ -1,49 +1,57 @@
 package com.foodDelivery.repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.List;  // Customers and Orders ni memory lo multiple records ga store cheyyadaniki List use chesthamu.
+import java.util.ArrayList; // List oka interface, direct ga use cheyalemu so Arraylist use chesi List interface vadutham.
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+
+import java.io.BufferedReader; //File lo line by line data read cheyyadaniki easy way.
+import java.io.FileReader; // File ni open chesi characters ni read cheyyadaniki we use this. But idhi convenient ga line-by-line read cheyyadu.Anduke we use BufferedReader.
+import java.io.IOException;  // File operations lo problems/errors occur avuthai while opening & reading files. So we need to handle those errors using try-catch block. And for that we need to import this class.
+import java.io.FileWriter; //File lo data write cheyyadaniki we use this. But idhi convenient ga line-by-line write cheyyadu.Anduke we use PrintWriter.
+import java.io.PrintWriter; //File lo formatted ga / easy ga text write cheyyadaniki use chestham.
 
 import com.foodDelivery.bean.Customer;
 import com.foodDelivery.bean.Order;
 
 public class FoodDeliveryRepository {
 
-    // Singleton instance
-    private static FoodDeliveryRepository instance;
+    // Singleton instance 
+    private static FoodDeliveryRepository instance; 
+    /*Singleton = oka class ki program motham lo only ONE object undela design cheyyadam.
+    *Application lo evaraina Repository kavali ante same object ni use chestaru.
+    *static ante ee variable class ki belong avutundi, particular object ki kaadu.
+    *ikkada instance anedi just oka variable name.ikkada instance loo foodDeliveryRepository object ni store chesi use chesthunamu.*/
 
     // Private constructor
     private FoodDeliveryRepository() {
         loadCustomers();
         loadOrders();
     }
+    /*Normally constructor public/default ga unte outside nunchi enni objects aina create cheyyachu.
+    *But Singleton goal = only ONE object. 
+    *So we make the constructor private and create one object with getInstance()*/
 
     // Singleton getInstance()
     public static FoodDeliveryRepository getInstance() {
-        if (instance == null) {
+        if (instance == null) {  // First time getInstance() call ayye appudu instance null untundi. So new object create chestham.
             instance = new FoodDeliveryRepository();
-        }
+        } // Next time getInstance() call ayye appudu instance null kaadu. So only one object create avutundi.
         return instance;
     }
 
-    private List<Customer> customers = new ArrayList<>();
-    private List<Order> orders = new ArrayList<>();
+    private List<Customer> customers = new ArrayList<>(); //Customer objects kosam oka empty ArrayList create chesi, danini customers variable lo store chesam.
+    private List<Order> orders = new ArrayList<>();  //Order objects ni store cheyyadaniki empty ArrayList create chesi, orders variable lo store chesam.
 
     private String customerFile = "src/resources/customers.csv";
     private String orderFile = "src/resources/orders.csv";
 
     public void addCustomer(Customer customer) {
-        customers.add(customer);
-        saveCustomers();
+        customers.add(customer); //new customer add ienapudu. Customer ni customers list lo add chestham.
+        saveCustomers(); //Customer add ayyaka, customers.csv file update cheyyali. So saveCustomers() method call chestham.
     }
 
-    public Customer findCustomerById(String customerId) {
-        for (Customer customer : customers) {
+    public Customer findCustomerById(String customerId) { //Customer ikkada return type.Ee method work complete ayyaka oka Customer object return chestundi.
+        for (Customer customer : customers) { //customers list lo unna prathi Customer ni one-by-one check cheyyi.
             if (customer.getCustomerId().equals(customerId)) {
                 return customer;
             }
@@ -51,17 +59,17 @@ public class FoodDeliveryRepository {
         return null;
     }
 
-    public List<Customer> getAllCustomers() {
-        return customers;
+    public List<Customer> getAllCustomers() { 
+        return customers; //customers list lo unna prathi Customer ni return chestundi.
     }
 
     public void addOrder(Order order) {
-        orders.add(order);
-        saveOrders();
+        orders.add(order); //new order add ienapudu. Order ni orders list lo add chestham.
+        saveOrders(); //Order add ayyaka, orders.csv file update cheyyali. So saveOrders() method call chestham.
     }
 
-    public List<Order> getAllOrders() {
-        return orders;
+    public List<Order> getAllOrders() { 
+        return orders; //orders list lo unna prathi Order ni return chestundi.
     }
 
     public Order findOrderById(String orderId) {
@@ -74,15 +82,16 @@ public class FoodDeliveryRepository {
     }
 
     public List<Order> getOrdersByCustomerId(String customerId) {
-        List<Order> customerOrders = new ArrayList<>();
+        List<Order> customerOrders = new ArrayList<>(); //Customer ki sambandhinchina orders ni store cheyyadaniki empty ArrayList create chesi, customerOrders variable lo store chesam.
         for (Order order : orders) {
             if (order.getCustomerId().equals(customerId)) {
-                customerOrders.add(order);
+                customerOrders.add(order);  //Customer ki sambandhinchina order ni customerOrders list lo add chestham.
             }
         }
         return customerOrders;
     }
 
+    /*Mana project lo customers memory lo ArrayList lo unnaru: */
     public void saveCustomers() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(customerFile))) {
             pw.println("customerId,customerName,phoneNumber,address");
