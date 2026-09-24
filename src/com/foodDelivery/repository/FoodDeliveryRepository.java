@@ -106,10 +106,14 @@ public class FoodDeliveryRepository {
             //customers ArrayList lo unna each customer ni one-by-one tesukoni, dani details ni file lo write chestham.
             for (Customer customer : customers) {
 
-                //customer object ni directly print chestunnam.
+                /*customer object ni directly print chestunnam.
+                manam Customer.java lo override chesina toString() method automatically call avutundi.
+                Anduke pw.println(customer) automatically toString() ni use chestundi.*/
                 pw.println(customer);
             }
         } catch (IOException e) {
+
+            //File save chestunnappudu problem vaste, program crash avvakunda error message chupinchadaniki.
             System.out.println("Error writing customers.csv: " + e.getMessage());
         }
     }
@@ -125,25 +129,26 @@ public class FoodDeliveryRepository {
             System.out.println("Error writing orders.csv: " + e.getMessage());
         }
     }
+
+    //loadCustomers() = CSV file nunchi customers ni read chesi ArrayList lo store cheyyadam. 
     public void loadCustomers() {
-        try (BufferedReader br = new BufferedReader(new FileReader(customerFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(customerFile))) { //File ni open chesthund. line to line read chesthundhi.
 
-            String line;
-            br.readLine();
+            String line; //Idi oka variable.File nunchi current line ni temporary ga store cheyyadaniki.
+            br.readLine(); //Header line ni skip cheyyali. So first line read chesi, danini ignore chestham.
 
-            while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) { //File lo next line read chesi, danini line variable lo store chestham. Loop continues till end of the file.
+                String[] data = line.split(","); //split(",") comma daggara break chestundi.
+                String customerId = data[0]; //"C001"
+                String customerName = data[1]; //"Ravi"
+                String phoneNumber = data[2]; //"9876543210"
+                String address = data[3]; //"Hyderabad"
 
-                String[] data = line.split(",");
-                String customerId = data[0];
-                String customerName = data[1];
-                String phoneNumber = data[2];
-                String address = data[3];
-
-                Customer customer = new Customer( customerId, customerName, phoneNumber, address );
+                Customer customer = new Customer( customerId, customerName, phoneNumber, address ); //Customer object create chesi, dani details constructor ki pass chestham.
                 customers.add(customer);
             }
         } catch (IOException e) {
-            System.out.println("Error reading customers.csv"+ e.getMessage());
+            System.out.println("Error reading customers.csv"+ e.getMessage()); 
         }
     }
     public void loadOrders() {
